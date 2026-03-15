@@ -3,175 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaFamiliaINC Streaming</title>
+<title>LaFamiliaINC</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+body{margin:0;font-family:Poppins;background:#0b0b0b;color:white}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#111;border-bottom:1px solid #222}
+.logo{font-weight:600;color:#1db954;font-size:22px}
+.search{padding:8px 10px;border-radius:6px;border:none;background:#1a1a1a;color:white}
 
-body{
-margin:0;
-font-family:Poppins;
-color:white;
-background:
-linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.95)),
-url('https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead');
-background-size:cover;
-background-attachment:fixed;
-}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 110px)}
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 30px;
-background:rgba(0,0,0,.8);
-backdrop-filter:blur(10px);
-border-bottom:1px solid #222;
-}
-
-.logo{
-font-weight:600;
-font-size:22px;
-color:#1db954
-}
-
-.search{
-padding:8px 12px;
-border-radius:8px;
-border:none;
-background:#111;
-color:white
-}
-
-nav a{
-margin-left:20px;
-color:#ccc;
-text-decoration:none;
-font-size:14px
-}
-
-nav a:hover{color:#1db954}
-
-.layout{
-display:grid;
-grid-template-columns:220px 1fr 300px;
-min-height:calc(100vh - 110px)
-}
-
-.sidebar{
-padding:20px;
-background:rgba(0,0,0,.65);
-border-right:1px solid #222
-}
-
+.sidebar{background:#0f0f0f;padding:20px;border-right:1px solid #1d1d1d}
 .sidebar h3{font-size:14px;color:#aaa}
 .sidebar div{margin:10px 0;cursor:pointer}
 .sidebar div:hover{color:#1db954}
 
 .main{padding:25px}
 
-.rightbar{
-padding:20px;
-background:rgba(0,0,0,.6);
-border-left:1px solid #222
-}
+.song{background:#151515;padding:12px;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 
-.banner{
-height:200px;
-border-radius:12px;
-background:url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4');
-background-size:cover;
-display:flex;
-align-items:flex-end;
-padding:20px;
-margin-bottom:25px
-}
+button{background:#1db954;border:none;padding:6px 10px;border-radius:6px;color:white;cursor:pointer}
+button:hover{opacity:.9}
 
-.banner h1{margin:0}
+.player{position:fixed;bottom:0;left:0;width:100%;background:#121212;border-top:1px solid #222;padding:10px}
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:20px
-}
+canvas{width:100%;height:60px;background:black;border-radius:6px;margin-top:6px}
 
-.card{
-background:rgba(20,20,20,.9);
-border-radius:12px;
-padding:12px;
-transition:.2s;
-position:relative
-}
-
-.card:hover{transform:scale(1.04)}
-
-.card img{width:100%;border-radius:10px}
-
-.playbtn{
-position:absolute;
-bottom:55px;
-right:15px;
-background:#1db954;
-border:none;
-border-radius:50%;
-width:40px;
-height:40px;
-cursor:pointer;
-display:none
-}
-
-.card:hover .playbtn{display:block}
-
-.songlist{margin-top:15px}
-
-.song{
-background:#111;
-padding:10px;
-border-radius:8px;
-margin-bottom:8px;
-display:flex;
-justify-content:space-between
-}
-
-.player{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#000;
-border-top:1px solid #222;
-padding:10px
-}
-
-.controls{margin-top:5px}
-
-button{
-background:#1db954;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-color:white;
-cursor:pointer
-}
-
-canvas{
-width:100%;
-height:60px;
-background:black;
-border-radius:6px
-}
-
-.widget{
-background:#111;
-padding:12px;
-border-radius:10px;
-margin-bottom:20px
-}
-
-.video{
-width:100%;
-border-radius:8px
-}
+.artistTitle{font-size:26px;margin-bottom:20px}
 
 </style>
 </head>
@@ -180,79 +39,32 @@ border-radius:8px
 
 <header>
 <div class="logo">LaFamiliaINC</div>
-<input class="search" placeholder="Search music" onkeyup="searchSongs(this.value)">
-<nav>
-<a onclick="showPage('home')">Home</a>
-<a onclick="showPage('artists')">Artists</a>
-<a onclick="showPage('albums')">Albums</a>
-<a onclick="showPage('fans')">Fans</a>
-</nav>
+<input class="search" placeholder="Search" onkeyup="searchSongs(this.value)">
 </header>
 
 <div class="layout">
 
 <div class="sidebar">
 <h3>Artists</h3>
-<div onclick="filterArtist('Str8faceMafia')">Str8faceMafia</div>
-<div onclick="filterArtist('Xucre')">Xucre</div>
-<div onclick="filterArtist('Mervoh')">Mervoh</div>
-<div onclick="filterArtist('Stonfyo Loving')">Stonfyo Loving</div>
-<div onclick="filterArtist('Lo Key')">Lo Key</div>
-<div onclick="filterArtist('Skyson')">Skyson</div>
+<div onclick="openArtist('Str8faceMafia')">Str8faceMafia</div>
+<div onclick="openArtist('Mervoh')">Mervoh</div>
+<div onclick="openArtist('Xucre')">Xucre</div>
+<div onclick="openArtist('Stonfyo Loving')">Stonfyo Loving</div>
+<div onclick="openArtist('Lo Key')">Lo Key</div>
+<div onclick="openArtist('Skyson')">Skyson</div>
 </div>
 
 <div class="main">
 
 <div id="home">
-
-<div class="banner">
-<h1>LaFamiliaINC Records</h1>
-</div>
-
-<h2>New Releases</h2>
-<div class="grid" id="albums"></div>
-
-<h2>Tracks</h2>
+<h2>All Songs</h2>
 <div id="songList"></div>
-
 </div>
 
-<div id="artists" style="display:none">
-<h2>Artist Profiles</h2>
-<div class="grid" id="artistGrid"></div>
-</div>
-
-<div id="fans" style="display:none">
-<h2>Fan Profiles</h2>
-<input id="fanName" placeholder="Create username">
-<button onclick="createFan()">Join</button>
-
-<div id="fanProfile"></div>
-</div>
-
-</div>
-
-<div class="rightbar">
-
-<div class="widget">
-<h3>🔥 Trending</h3>
-<div id="trending"></div>
-</div>
-
-<div class="widget">
-<h3>🏆 Top Fans</h3>
-<div id="topFans"></div>
-</div>
-
-<div class="widget">
-<h3>📰 Label News</h3>
-<p>New Str8faceMafia project dropping soon.</p>
-<p>Xucre visuals coming this week.</p>
-</div>
-
-<div class="widget">
-<h3>📺 Music Video</h3>
-<iframe class="video" height="150" src="https://www.youtube.com/embed/ysz5S6PUM-U"></iframe>
+<div id="artistPage" style="display:none">
+<div class="artistTitle" id="artistName"></div>
+<div id="artistSongs"></div>
+<button onclick="goHome()">Back</button>
 </div>
 
 </div>
@@ -263,13 +75,6 @@ border-radius:8px
 <div id="nowPlaying">Nothing playing</div>
 <audio id="audio" controls style="width:100%"></audio>
 <canvas id="visualizer"></canvas>
-<div class="controls">
-<button onclick="prevSong()">Prev</button>
-<button onclick="togglePlay()">Play</button>
-<button onclick="nextSong()">Next</button>
-<button onclick="likeSong()">♥ Like</button>
-<button onclick="followArtist()">Follow</button>
-</div>
 </div>
 
 <script>
@@ -277,14 +82,18 @@ border-radius:8px
 function gdrive(id){return `https://drive.google.com/uc?export=download&id=${id}`}
 
 let songs=[
-{artist:"Str8faceMafia",title:"100 Racks",url:gdrive("1jDtSn2YwbVHdm0kvEjd5Nj3sLVN6_EeP"),plays:0},
-{artist:"Mervoh",title:"Beautiful Mistake",url:gdrive("1v0hDBFGQ6op72PZ3_LU4nXRy2K6iHpQC"),plays:0},
-{artist:"Xucre",title:"Dripping Goddess",url:gdrive("1_nLAWH8pCRrKlx1HzD6OlvDxONZccPlB"),plays:0},
-{artist:"Skyson",title:"Freestyle",url:gdrive("1_3GuOxQUwBPeGnjP9bW1rt_IDI53sFgJ"),plays:0}
+{artist:"Str8faceMafia",title:"100 Racks",url:gdrive("1jDtSn2YwbVHdm0kvEjd5Nj3sLVN6_EeP")},
+{artist:"Str8faceMafia",title:"Loyalty",url:gdrive("1xu6BNTW1GvXBOQ85dwk1qQgNyoSPnlY0")},
+{artist:"Str8faceMafia",title:"Matte Black",url:gdrive("1U8_Q28wPCUMUqo3qJw_iBrgtpowLnLAL")},
+{artist:"Mervoh",title:"Beautiful Mistake",url:gdrive("1v0hDBFGQ6op72PZ3_LU4nXRy2K6iHpQC")},
+{artist:"Xucre",title:"Dripping Goddess",url:gdrive("1_nLAWH8pCRrKlx1HzD6OlvDxONZccPlB")},
+{artist:"Skyson",title:"Freestyle",url:gdrive("1_3GuOxQUwBPeGnjP9bW1rt_IDI53sFgJ")},
+{artist:"Lo Key",title:"Moto Chini",url:gdrive("1S3sa-4Y_aEr5g4qbWJlF7GjOWbhWzzCL")},
+{artist:"Stonfyo Loving",title:"African Original",url:gdrive("1HiiOGJq8DpiSrzX7NWT9oDHGqGmOwalE")}
 ]
 
+let currentIndex=0
 const audio=document.getElementById("audio")
-let current=0
 
 function renderSongs(list=songs){
 let box=document.getElementById("songList")
@@ -293,85 +102,89 @@ box.innerHTML=""
 list.forEach((s,i)=>{
 let div=document.createElement("div")
 div.className="song"
-div.innerHTML=`${s.title} — ${s.artist} <button onclick="playSong(${i})">Play</button>`
+
+div.innerHTML=`
+<span>${s.title} — ${s.artist}</span>
+<button onclick="playSong(${i})">Play</button>
+`
+
 box.appendChild(div)
 })
-
-updateTrending()
 }
 
 renderSongs()
 
 function playSong(i){
-current=i
+currentIndex=i
 let s=songs[i]
+
 audio.src=s.url
-s.plays++
-nowPlaying.innerText=`Now Playing: ${s.title} — ${s.artist}`
+
 audio.play()
-updateTrending()
+
+nowPlaying.innerText=`Now Playing: ${s.title} — ${s.artist}`
+
 startVisualizer()
 }
 
-function togglePlay(){if(audio.paused)audio.play();else audio.pause()}
-function nextSong(){current=(current+1)%songs.length;playSong(current)}
-function prevSong(){current=(current-1+songs.length)%songs.length;playSong(current)}
-
 function searchSongs(q){
 q=q.toLowerCase()
-let filtered=songs.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q))
+
+let filtered=songs.filter(s=>
+s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)
+)
+
 renderSongs(filtered)
 }
 
-function filterArtist(name){
-let filtered=songs.filter(s=>s.artist==name)
-renderSongs(filtered)
-}
+function openArtist(name){
 
-function updateTrending(){
-let box=document.getElementById("trending")
+let filtered=songs.filter(s=>s.artist===name)
+
+artistName.innerText=name
+
+let box=document.getElementById("artistSongs")
 box.innerHTML=""
 
-[...songs].sort((a,b)=>b.plays-a.plays).slice(0,5).forEach(s=>{
+filtered.forEach(s=>{
+let index=songs.indexOf(s)
+
 let div=document.createElement("div")
-div.innerText=s.title+" ("+s.plays+")"
+
+div.className="song"
+
+div.innerHTML=`
+<span>${s.title}</span>
+<button onclick="playSong(${index})">Play</button>
+`
+
 box.appendChild(div)
 })
+
+home.style.display="none"
+artistPage.style.display="block"
 }
 
-function likeSong(){
-alert("Song liked")
-}
-
-function followArtist(){
-alert("Artist followed")
-}
-
-function createFan(){
-let name=document.getElementById("fanName").value
-localStorage.setItem("fan",name)
-fanProfile.innerText="Welcome "+name
-}
-
-function showPage(id){
-['home','artists','fans'].forEach(p=>{
-document.getElementById(p).style.display='none'
-})
-
-document.getElementById(id).style.display='block'
+function goHome(){
+artistPage.style.display="none"
+home.style.display="block"
 }
 
 const canvas=document.getElementById("visualizer")
 const ctx=canvas.getContext("2d")
+
 let audioCtx, analyser, source
 
 function startVisualizer(){
+
 if(!audioCtx){
  audioCtx=new AudioContext()
  source=audioCtx.createMediaElementSource(audio)
  analyser=audioCtx.createAnalyser()
+
  source.connect(analyser)
  analyser.connect(audioCtx.destination)
+
  analyser.fftSize=64
 }
 
@@ -379,20 +192,29 @@ const bufferLength=analyser.frequencyBinCount
 const dataArray=new Uint8Array(bufferLength)
 
 function draw(){
+
 requestAnimationFrame(draw)
+
 analyser.getByteFrequencyData(dataArray)
+
 ctx.clearRect(0,0,canvas.width,canvas.height)
 
 let barWidth=(canvas.width/bufferLength)
 
 for(let i=0;i<bufferLength;i++){
+
 let h=dataArray[i]/2
+
 ctx.fillStyle="#1db954"
+
 ctx.fillRect(i*barWidth,canvas.height-h,barWidth-2,h)
-}
+
 }
 
-draw()
+}
+
+ draw()
+
 }
 
 </script>
