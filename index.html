@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaFamiliaINC</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0b0b">
+<style>
+body{margin:0;font-family:Arial;background:#0b0b0b;color:white}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#111}
+.logo{font-weight:bold;font-size:22px;color:#1db954}
+.container{max-width:1000px;margin:auto;padding:20px}
+.artist{background:#151515;padding:15px;border-radius:10px;margin-bottom:15px}
+button{padding:8px 12px;border:none;border-radius:6px;background:#1db954;color:white;cursor:pointer;margin-top:6px}
+audio{width:100%;margin-top:10px}
+.search{padding:8px;border-radius:8px;border:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">LaFamiliaINC</div>
+<input class="search" placeholder="Search artists...">
+</header>
+
+<div class="container">
+
+<h2>Music Player</h2>
+<audio id="player" controls></audio>
+
+<h2>Artists</h2>
+
+<div class="artist">
+<h3>Skyson</h3>
+<button onclick="playSong('SONG_URL')">Stream</button><br>
+<a href="MEGA_LINK" target="_blank"><button>Download Track 1</button></a>
+<a href="MEGA_LINK" target="_blank"><button>Download Track 2</button></a>
+</div>
+
+<div class="artist">
+<h3>Str8faceMafia</h3>
+<button onclick="playSong('SONG_URL')">Stream</button><br>
+<a href="MEGA_LINK" target="_blank"><button>Download Pressure Talk</button></a>
+<a href="MEGA_LINK" target="_blank"><button>Download Phantom Pain</button></a>
+</div>
+
+<div class="artist">
+<h3>Mervoh</h3>
+<button onclick="playSong('SONG_URL')">Stream</button><br>
+<a href="MEGA_LINK" target="_blank"><button>Download Track</button></a>
+</div>
+
+<div class="artist">
+<h3>Xucre</h3>
+<button onclick="playSong('SONG_URL')">Stream</button><br>
+<a href="MEGA_LINK" target="_blank"><button>Download Track</button></a>
+</div>
+
+<div class="artist">
+<h3>Stonfyo Loving</h3>
+<button onclick="playSong('SONG_URL')">Stream</button><br>
+<a href="MEGA_LINK" target="_blank"><button>Download EP</button></a>
+</div>
+
+</div>
+
+<script>
+function playSong(url){
+const player=document.getElementById('player')
+player.src=url
+player.play()
+}
+
+if('serviceWorker' in navigator){
+ navigator.serviceWorker.register('service-worker.js')
+}
+</script>
+
+</body>
+</html>
