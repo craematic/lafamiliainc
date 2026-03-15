@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LaFamiliaINC</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -12,142 +12,278 @@
 
 <style>
 body{margin:0;font-family:Poppins;background:#0b0b0b;color:white}
-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111;border-bottom:1px solid #222;position:sticky;top:0;flex-wrap:wrap}
-.logo{font-weight:700;font-size:20px;color:#1db954;display:flex;align-items:center;gap:6px}
-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-nav a{color:white;text-decoration:none;font-size:14px}
-.search{padding:6px;border-radius:8px;border:none;width:100%;max-width:300px;margin-top:8px}
-.container{max-width:1000px;margin:auto;padding:20px}
-.artist{background:#151515;padding:15px;border-radius:12px;margin-bottom:16px}
-button{padding:8px 12px;border:none;border-radius:8px;background:#1db954;color:white;cursor:pointer;margin-top:5px;font-size:14px;width:100%}
-button:hover{opacity:.9}
-input,textarea{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:#1a1a1a;color:white}
-.post{background:#151515;padding:15px;border-radius:12px;margin-top:15px}
-.comment{font-size:13px;color:#ccc;margin-top:6px}
-.player{background:#1a1a1a;padding:20px;border-radius:12px;margin-bottom:20px;box-shadow:0 0 15px rgba(0,255,150,0.2);}
-#currentSong{font-size:16px;color:#1db954;margin-bottom:10px;font-weight:600}
-audio{width:100%;border-radius:8px}
-.rating span{cursor:pointer;font-size:18px;color:#555;margin-right:2px}
-.rating span:hover{color:#1db954}
-.avgRating{margin-left:8px;font-size:14px;color:#1db954}
-footer{text-align:center;padding:20px;color:#777;font-size:14px}
-.artist-name{font-weight:600;font-size:16px;margin-bottom:8px}
-#visualizer{width:100%;height:100px;margin-top:10px;border-radius:6px;background:#0b0b0b}
-@media(max-width:600px){
-  header{flex-direction:column;align-items:flex-start}
-  nav{flex-direction:column;align-items:flex-start}
-  .artist-name{font-size:15px}
-  button{font-size:14px;padding:8px 10px}
-  #currentSong{font-size:14px}
-}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:15px;background:#111;border-bottom:1px solid #222}
+.logo{font-weight:700;font-size:22px;color:#1db954}
+nav a{margin-left:15px;color:white;text-decoration:none;font-size:14px}
+.search{padding:8px;border-radius:10px;border:none;width:180px}
+.container{max-width:1100px;margin:auto;padding:20px}
+.song{background:#151515;padding:15px;border-radius:12px;margin-bottom:12px}
+button{padding:8px 14px;border:none;border-radius:8px;background:#1db954;color:white;cursor:pointer;margin-top:5px}
+.player{position:fixed;bottom:0;width:100%;background:#121212;border-top:1px solid #222;padding:15px}
+.controls{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.visualizer{width:100%;height:60px;background:#000;border-radius:8px;margin-top:10px}
+.rating span{cursor:pointer;font-size:18px}
+.comment{font-size:13px;color:#ccc;margin-top:5px}
+.artistCard{background:#151515;padding:15px;border-radius:12px;margin-bottom:10px}
+.trending{background:#151515;padding:15px;border-radius:12px;margin-bottom:20px}
+@media(max-width:700px){nav{width:100%;margin-top:10px}}
 </style>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b0b0b">
 </head>
 
 <body>
+
 <header>
-<div class="logo">
-<img src="lafamilia-logo.png" alt="LaFamilia INC" style="height:32px;border-radius:6px;">
-<span>LaFamiliaINC</span>
-</div>
-<input class="search" placeholder="Search music, artists, posts" onkeyup="searchContent(this.value)">
+<div class="logo">LaFamiliaINC</div>
+<input class="search" placeholder="Search music" onkeyup="searchSongs(this.value)">
 <nav>
 <a href="#music">Music</a>
-<a href="#community">Community</a>
 <a href="#artists">Artists</a>
-<a href="#login">Account</a>
+<a href="#account">Account</a>
 </nav>
 </header>
 
 <div class="container">
-  <div class="player" id="mainPlayer">
-    <h3>🎵 Now Playing</h3>
-    <div id="currentSong">No song selected</div>
-    <audio id="audioPlayer" controls></audio>
-    <canvas id="visualizer"></canvas>
-  </div>
+<div class="trending">
+<h3>🔥 Trending Songs</h3>
+<div id="trending"></div>
+</div>
 </div>
 
 <div class="container" id="music">
-<h2>Stream</h2>
-
-<div class="artist">
-<div class="artist-name">Str8faceMafia</div>
-<button onclick="playSong('https://mega.nz/file/roBmhAhL#V7f56hItbcl-6y7NXyxDO4-goamSyzGYlRGV8jhPuNQ','100 Racks - Str8faceMafia')">▶ 100 Racks</button>
-<button onclick="playSong('https://mega.nz/file/e4AkTCAR#Ge06PmZteEVaJNt27Y3OVvj0Z0zqbHBe-_A4-nvjRlI','Consequences - Str8faceMafia')">▶ Consequences</button>
-<button onclick="playSong('https://mega.nz/file/q0ZjFQ7R#zM88JphNtsUs3qt-nclTrMK63hMz8FPk7gzmohbTt2s','Loyalty - Str8faceMafia')">▶ Loyalty</button>
-<button onclick="playSong('https://mega.nz/file/f5hXQTrD#-eWRhW0tbYNjw9_M-Niewxp-zXdr3qhwHCAstr7evyw','Matte Black - Str8faceMafia')">▶ Matte Black</button>
-<button onclick="playSong('https://mega.nz/file/XtxiUYwJ#2E6TOP4SOuYi7KyWmkx_95ObpOrTfyb-hVxHiM2U-oo','Mirror - Str8faceMafia')">▶ Mirror</button>
-<button onclick="playSong('https://mega.nz/file/XhQwkYRR#Ek-d0gbGgDN9Fl6fGc_5EfAKfXg6ZUBfGkJQ70n23O4','Phantom Pain - Str8faceMafia')">▶ Phantom Pain</button>
-<button onclick="playSong('https://mega.nz/file/DpARhB5B#LIekPEFbNqeC3FFHjVDCZB3zNGDepV8xhKcav9V1ii0','Pressure Talk - Str8faceMafia')">▶ Pressure Talk</button>
-<button onclick="playSong('https://mega.nz/file/K8B0FKBT#1_QkBAePvu3qDYg6z9vYy-BS-kmcFhwsM1rkISL_qZU','Velvet Warnings - Str8faceMafia')">▶ Velvet Warnings</button>
+<h2>Stream Music</h2>
+<div id="songList"></div>
 </div>
 
-<div class="artist">
-<div class="artist-name">Mervoh</div>
-<button onclick="playSong('https://mega.nz/file/e9pF3D7K#baDCeO3Gk86rMpMJ8JD7eKzxRsssUHRpm0574MCrqyg','Beautiful Mistake - Mervoh')">▶ Beautiful Mistake</button>
+<div class="container" id="artists">
+<h2>Artists</h2>
+<div class="artistCard">Str8faceMafia — Trap / Hip‑Hop</div>
+<div class="artistCard">Mervoh — Emotional Hip‑Hop</div>
+<div class="artistCard">Xucre — R&B / Alternative</div>
+<div class="artistCard">Stonfyo Loving — Afro Fusion</div>
+<div class="artistCard">Lo Key — Afrobeat</div>
+<div class="artistCard">Skyson — Hip‑Hop</div>
 </div>
 
-<div class="artist">
-<div class="artist-name">Xucre</div>
-<button onclick="playSong('https://mega.nz/file/XtARVIKJ#q3Bbz_z7-8PEyqZ9-qBl23PkUCuHVOvBDs4e6YyFero','Dripping Goddess - Xucre')">▶ Dripping Goddess</button>
+<div class="container" id="account">
+<h2>User Account</h2>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="register()">Create Account</button>
+<button onclick="login()">Login</button>
+
+<h3>Your Playlist</h3>
+<div id="playlist"></div>
+</div>
+
+<div class="player">
+<div id="nowPlaying">Nothing playing</div>
+<audio id="audio" crossorigin="anonymous"></audio>
+
+<canvas id="visualizer" class="visualizer"></canvas>
+
+<div class="controls">
+<button onclick="togglePlay()">Play/Pause</button>
+<button onclick="prevSong()">Prev</button>
+<button onclick="nextSong()">Next</button>
+<button onclick="shuffleSongs()">Shuffle</button>
+<button onclick="repeatSong()">Repeat</button>
+<button onclick="saveToPlaylist()">➕ Playlist</button>
+<button onclick="shareTikTok()">TikTok</button>
+<button onclick="shareFacebook()">Facebook</button>
+</div>
+
+<div class="rating" id="rating"></div>
 </div>
 
 <script>
-// Audio & Visualizer Setup
-const audio = document.getElementById('audioPlayer');
-const canvas = document.getElementById('visualizer');
-const ctx = canvas.getContext('2d');
-let audioCtx, analyser, source;
 
-function initAudioContext(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    source = audioCtx.createMediaElementSource(audio);
-    analyser = audioCtx.createAnalyser();
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    analyser.fftSize = 256;
-    drawVisualizer();
-  }
+const firebaseConfig={apiKey:"ADD_KEY",authDomain:"ADD_DOMAIN",projectId:"ADD_ID"}
+firebase.initializeApp(firebaseConfig)
+const auth=firebase.auth()
+const db=firebase.firestore()
+
+function register(){
+let e=email.value
+let p=password.value
+auth.createUserWithEmailAndPassword(e,p)
+.then(()=>alert("Account created"))
+.catch(err=>alert(err.message))
 }
 
-const bufferLength = 128;
-const dataArray = new Uint8Array(bufferLength);
-function drawVisualizer(){
-  if(!analyser) return;
-  requestAnimationFrame(drawVisualizer);
-  analyser.getByteFrequencyData(dataArray);
-  ctx.fillStyle = '#0b0b0b';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  const barWidth = (canvas.width / bufferLength) * 2.5;
-  let x = 0;
-  for(let i=0;i<bufferLength;i++){
-    const barHeight = dataArray[i]/2;
-    ctx.fillStyle = '#1db954';
-    ctx.fillRect(x, canvas.height-barHeight, barWidth, barHeight);
-    x+=barWidth+1;
-  }
+function login(){
+let e=email.value
+let p=password.value
+auth.signInWithEmailAndPassword(e,p)
+.then(()=>loadPlaylist())
+.catch(err=>alert(err.message))
 }
 
-function playSong(url,title){
-  initAudioContext();
-  audioCtx.resume().then(()=>{
-    const trimmedUrl = url.split('#')[0];
-    audio.src = trimmedUrl;
-    audio.play();
-    document.getElementById('currentSong').innerText = 'Now Playing: ' + title;
-  });
+function gdrive(id){return `https://drive.google.com/uc?export=download&id=${id}`}
+
+let songs=[
+{artist:"Mervoh",title:"Beautiful Mistake",url:gdrive("1v0hDBFGQ6op72PZ3_LU4nXRy2K6iHpQC"),plays:0},
+{artist:"Str8faceMafia",title:"Loyalty",url:gdrive("1xu6BNTW1GvXBOQ85dwk1qQgNyoSPnlY0"),plays:0},
+{artist:"Str8faceMafia",title:"Velvet Warnings Remix",url:gdrive("1QvqR-_9ZHhJfXf7-E5oZu_inoI8tvw5_"),plays:0},
+{artist:"Str8faceMafia",title:"100 Racks",url:gdrive("1jDtSn2YwbVHdm0kvEjd5Nj3sLVN6_EeP"),plays:0},
+{artist:"Xucre",title:"Dripping Goddess",url:gdrive("1_nLAWH8pCRrKlx1HzD6OlvDxONZccPlB"),plays:0},
+{artist:"Skyson",title:"Freestyle",url:gdrive("1_3GuOxQUwBPeGnjP9bW1rt_IDI53sFgJ"),plays:0}
+]
+
+let currentIndex=0
+const audio=document.getElementById("audio")
+
+function renderSongs(){
+let list=document.getElementById("songList")
+list.innerHTML=""
+
+songs.forEach((s,i)=>{
+let div=document.createElement("div")
+div.className="song"
+
+div.innerHTML=`<strong>${s.title}</strong> — ${s.artist}
+<button onclick="playSong(${i})">Stream</button>
+<button onclick="addComment(${i})">Comment</button>
+<div id="comments-${i}"></div>`
+
+list.appendChild(div)
+})
+
+updateTrending()
 }
 
-function searchContent(q){
-  q=q.toLowerCase();
-  let blocks=document.querySelectorAll('.artist,.post');
-  blocks.forEach(b=>{if(b.innerText.toLowerCase().includes(q)){b.style.display='block'}else{b.style.display='none'});
+renderSongs()
+
+function playSong(i){
+currentIndex=i
+let s=songs[i]
+s.plays++
+audio.src=s.url
+nowPlaying.innerText=`Now Playing: ${s.title} — ${s.artist}`
+audio.play()
+updateTrending()
 }
+
+function togglePlay(){if(audio.paused)audio.play();else audio.pause()}
+
+function nextSong(){currentIndex=(currentIndex+1)%songs.length;playSong(currentIndex)}
+
+function prevSong(){currentIndex=(currentIndex-1+songs.length)%songs.length;playSong(currentIndex)}
+
+function shuffleSongs(){songs.sort(()=>Math.random()-0.5);renderSongs()}
+
+function repeatSong(){audio.loop=!audio.loop}
+
+function searchSongs(q){
+q=q.toLowerCase()
+document.querySelectorAll('.song').forEach(el=>{
+if(el.innerText.toLowerCase().includes(q))el.style.display='block'
+else el.style.display='none'
+})
+}
+
+function addComment(i){
+let text=prompt("Write a comment")
+if(!text)return
+
+let div=document.createElement("div")
+div.className="comment"
+div.innerText="💬 "+text
+
+document.getElementById(`comments-${i}`).appendChild(div)
+}
+
+function saveToPlaylist(){
+let user=auth.currentUser
+if(!user)return alert("Login first")
+
+let s=songs[currentIndex]
+
+db.collection("playlists").add({
+uid:user.uid,
+title:s.title,
+artist:s.artist,
+url:s.url
+}).then(()=>loadPlaylist())
+}
+
+function loadPlaylist(){
+let user=auth.currentUser
+if(!user)return
+
+let box=document.getElementById("playlist")
+box.innerHTML=""
+
+ db.collection("playlists")
+ .where("uid","==",user.uid)
+ .get()
+ .then(snapshot=>{
+ snapshot.forEach(doc=>{
+ let s=doc.data()
+ let div=document.createElement("div")
+ div.innerHTML=`${s.title} — ${s.artist}`
+ box.appendChild(div)
+ })
+ })
+}
+
+function shareTikTok(){
+let s=songs[currentIndex]
+let url=`https://www.tiktok.com/upload?title=${encodeURIComponent(s.title)}`
+window.open(url)
+}
+
+function shareFacebook(){
+let s=songs[currentIndex]
+let url=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(s.url)}`
+window.open(url)
+}
+
+function updateTrending(){
+let top=[...songs].sort((a,b)=>b.plays-a.plays).slice(0,5)
+
+let box=document.getElementById("trending")
+box.innerHTML=""
+
+top.forEach(s=>{
+let div=document.createElement("div")
+div.innerText=`${s.title} — ${s.artist} (${s.plays} plays)`
+box.appendChild(div)
+})
+}
+
+const ctx=document.getElementById('visualizer').getContext('2d')
+const audioCtx=new AudioContext()
+const src=audioCtx.createMediaElementSource(audio)
+const analyser=audioCtx.createAnalyser()
+src.connect(analyser)
+analyser.connect(audioCtx.destination)
+analyser.fftSize=64
+
+const bufferLength=analyser.frequencyBinCount
+const dataArray=new Uint8Array(bufferLength)
+
+function draw(){
+requestAnimationFrame(draw)
+analyser.getByteFrequencyData(dataArray)
+ctx.clearRect(0,0,500,60)
+let barWidth=500/bufferLength
+for(let i=0;i<bufferLength;i++){
+let h=dataArray[i]/2
+ctx.fillStyle="#1db954"
+ctx.fillRect(i*barWidth,60-h,barWidth-2,h)
+}
+}
+
+draw()
+
+for(let i=1;i<=5;i++){
+let star=document.createElement("span")
+star.innerText="★"
+star.onclick=()=>alert("Rated "+i+" stars")
+rating.appendChild(star)
+}
+
 </script>
 
-<footer>LaFamiliaINC Music Network</footer>
 </body>
 </html>
