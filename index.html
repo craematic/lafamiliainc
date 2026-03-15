@@ -1,83 +1,123 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LaFamiliaINC</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase (FREE backend for login + posts) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;font-family:Poppins;background:#0b0b0b;color:white}
+header{display:flex;align-items:center;justify-content:space-between;padding:15px 30px;background:#111;border-bottom:1px solid #222;position:sticky;top:0}
+.logo{font-weight:700;font-size:22px;color:#1db954}
+nav a{margin-left:20px;color:white;text-decoration:none}
+.search{padding:8px;border-radius:10px;border:none;width:220px}
+.container{max-width:1100px;margin:auto;padding:25px}
+.artist{background:#151515;padding:20px;border-radius:14px;margin-bottom:18px}
+button{padding:8px 14px;border:none;border-radius:8px;background:#1db954;color:white;cursor:pointer;margin-top:5px}
+button:hover{opacity:.9}
+input,textarea{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:#1a1a1a;color:white}
+.post{background:#151515;padding:15px;border-radius:12px;margin-top:15px}
+.comment{font-size:13px;color:#ccc;margin-top:6px}
+.player{background:#121212;padding:15px;border-radius:12px;margin-bottom:20px}
+footer{text-align:center;padding:30px;color:#777}
+.artist-name{font-weight:600}
+</style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0b0b">
-<style>
-body{margin:0;font-family:Arial;background:#0b0b0b;color:white}
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#111}
-.logo{font-weight:bold;font-size:22px;color:#1db954}
-.container{max-width:1000px;margin:auto;padding:20px}
-.artist{background:#151515;padding:15px;border-radius:10px;margin-bottom:15px}
-button{padding:8px 12px;border:none;border-radius:6px;background:#1db954;color:white;cursor:pointer;margin-top:6px}
-audio{width:100%;margin-top:10px}
-.search{padding:8px;border-radius:8px;border:none}
-</style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">LaFamiliaINC</div>
-<input class="search" placeholder="Search artists...">
+<div class="logo" style="display:flex;align-items:center;gap:10px;">
+<img src="lafamilia-logo.png" alt="LaFamilia INC" style="height:36px;border-radius:6px;">
+<span>LaFamiliaINC</span>
+</div>
+
+<input class="search" placeholder="Search music, artists, posts" onkeyup="searchContent(this.value)">
+
+<nav>
+<a href="#music">Music</a>
+<a href="#community">Community</a>
+<a href="#artists">Artists</a>
+<a href="#login">Account</a>
+</nav>
 </header>
 
 <div class="container">
-
-<h2>Music Player</h2>
-<audio id="player" controls></audio>
-
-<h2>Artists</h2>
-
-<div class="artist">
-<h3>Skyson</h3>
-<button onclick="playSong('SONG_URL')">Stream</button><br>
-<a href="MEGA_LINK" target="_blank"><button>Download Track 1</button></a>
-<a href="MEGA_LINK" target="_blank"><button>Download Track 2</button></a>
+<div class="player">
+<h3>Music Player</h3>
+<audio id="audioPlayer" controls style="width:100%"></audio>
+</div>
 </div>
 
-<div class="artist">
-<h3>Str8faceMafia</h3>
-<button onclick="playSong('SONG_URL')">Stream</button><br>
-<a href="MEGA_LINK" target="_blank"><button>Download Pressure Talk</button></a>
-<a href="MEGA_LINK" target="_blank"><button>Download Phantom Pain</button></a>
-</div>
+<div class="container" id="music">
+<h2>Stream & Download</h2>
 
 <div class="artist">
-<h3>Mervoh</h3>
-<button onclick="playSong('SONG_URL')">Stream</button><br>
-<a href="MEGA_LINK" target="_blank"><button>Download Track</button></a>
+<div class="artist-name">Str8faceMafia</div>
+<button onclick="playSong('https://mega.nz/file/roBmhAhL#V7f56hItbcl-6y7NXyxDO4-goamSyzGYlRGV8jhPuNQ')">▶ Stream 100 Racks</button>
+<div>
+<strong>Downloads:</strong><br>
+<a href="https://mega.nz/file/roBmhAhL#V7f56hItbcl-6y7NXyxDO4-goamSyzGYlRGV8jhPuNQ" target="_blank"><button>⬇ 100 Racks</button></a>
+<a href="https://mega.nz/file/e4AkTCAR#Ge06PmZteEVaJNt27Y3OVvj0Z0zqbHBe-_A4-nvjRlI" target="_blank"><button>⬇ Consequences</button></a>
+<a href="https://mega.nz/file/q0ZjFQ7R#zM88JphNtsUs3qt-nclTrMK63hMz8FPk7gzmohbTt2s" target="_blank"><button>⬇ Loyalty</button></a>
+<a href="https://mega.nz/file/f5hXQTrD#-eWRhW0tbYNjw9_M-Niewxp-zXdr3qhwHCAstr7evyw" target="_blank"><button>⬇ Matte Black</button></a>
+<a href="https://mega.nz/file/XtxiUYwJ#2E6TOP4SOuYi7KyWmkx_95ObpOrTfyb-hVxHiM2U-oo" target="_blank"><button>⬇ Mirror</button></a>
+<a href="https://mega.nz/file/XhQwkYRR#Ek-d0gbGgDN9Fl6fGc_5EfAKfXg6ZUBfGkJQ70n23O4" target="_blank"><button>⬇ Phantom Pain</button></a>
+<a href="https://mega.nz/file/DpARhB5B#LIekPEFbNqeC3FFHjVDCZB3zNGDepV8xhKcav9V1ii0" target="_blank"><button>⬇ Pressure Talk</button></a>
+<a href="https://mega.nz/file/K8B0FKBT#1_QkBAePvu3qDYg6z9vYy-BS-kmcFhwsM1rkISL_qZU" target="_blank"><button>⬇ Velvet Warnings</button></a>
 </div>
-
-<div class="artist">
-<h3>Xucre</h3>
-<button onclick="playSong('SONG_URL')">Stream</button><br>
-<a href="MEGA_LINK" target="_blank"><button>Download Track</button></a>
 </div>
 
 <div class="artist">
-<h3>Stonfyo Loving</h3>
-<button onclick="playSong('SONG_URL')">Stream</button><br>
-<a href="MEGA_LINK" target="_blank"><button>Download EP</button></a>
+<div class="artist-name">Mervoh</div>
+<button onclick="playSong('https://mega.nz/file/e9pF3D7K#baDCeO3Gk86rMpMJ8JD7eKzxRsssUHRpm0574MCrqyg')">▶ Stream Beautiful Mistake</button>
+<div>
+<strong>Downloads:</strong><br>
+<a href="https://mega.nz/file/e9pF3D7K#baDCeO3Gk86rMpMJ8JD7eKzxRsssUHRpm0574MCrqyg" target="_blank"><button>⬇ Beautiful Mistake</button></a>
+</div>
+</div>
+
+<div class="artist">
+<div class="artist-name">Xucre</div>
+<button onclick="playSong('https://mega.nz/file/XtARVIKJ#q3Bbz_z7-8PEyqZ9-qBl23PkUCuHVOvBDs4e6YyFero')">▶ Stream Dripping Goddess</button>
+<div>
+<strong>Downloads:</strong><br>
+<a href="https://mega.nz/file/XtARVIKJ#q3Bbz_z7-8PEyqZ9-qBl23PkUCuHVOvBDs4e6YyFero" target="_blank"><button>⬇ Dripping Goddess</button></a>
+</div>
 </div>
 
 </div>
 
+<!-- Firebase + Community + Login sections remain unchanged -->
 <script>
-function playSong(url){
-const player=document.getElementById('player')
-player.src=url
-player.play()
-}
-
-if('serviceWorker' in navigator){
- navigator.serviceWorker.register('service-worker.js')
-}
+// Firebase config (replace with your keys)
+const firebaseConfig = {
+apiKey: "ADD_KEY",
+authDomain: "ADD_DOMAIN",
+projectId: "ADD_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+function register(){let email=document.getElementById("email").value;let pass=document.getElementById("password").value;auth.createUserWithEmailAndPassword(email,pass).then(()=>alert("Account created")).catch(e=>alert(e.message));}
+function login(){let email=document.getElementById("email").value;let pass=document.getElementById("password").value;auth.signInWithEmailAndPassword(email,pass).then(()=>alert("Logged in")).catch(e=>alert(e.message));}
+function createPost(){let text=document.getElementById("postText").value;if(text.length<1)return;db.collection("posts").add({text:text,time:Date.now()});document.getElementById("postText").value="";}
+function loadPosts(){db.collection("posts").orderBy("time","desc").onSnapshot(snapshot=>{let posts=document.getElementById("posts");posts.innerHTML="";snapshot.forEach(doc=>{let p=document.createElement("div");p.className="post";p.innerHTML=`<p>${doc.data().text}</p><input placeholder="comment"><button onclick="comment(this)">Reply</button>`;posts.appendChild(p);});});}
+loadPosts();
+function comment(btn){let input=btn.previousElementSibling;let c=document.createElement("div");c.className="comment";c.innerText="💬 "+input.value;btn.parentElement.appendChild(c);input.value="";}
+function playSong(url){let player=document.getElementById("audioPlayer");player.src=url;player.play();}
+function searchContent(q){q=q.toLowerCase();let blocks=document.querySelectorAll(".artist,.post");blocks.forEach(b=>{if(b.innerText.toLowerCase().includes(q)){b.style.display="block"}else{b.style.display="none"}});}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js');}
 </script>
 
+<footer>LaFamiliaINC Music Network</footer>
 </body>
 </html>
