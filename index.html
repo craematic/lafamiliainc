@@ -3,30 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaFamiliaINC</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<title>LaFamiliaINC Streaming</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Poppins;background:#0b0b0b;color:white}
-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:15px;background:#111;border-bottom:1px solid #222}
-.logo{font-weight:700;font-size:22px;color:#1db954}
-nav a{margin-left:15px;color:white;text-decoration:none;font-size:14px}
-.search{padding:8px;border-radius:10px;border:none;width:180px}
-.container{max-width:1100px;margin:auto;padding:20px}
-.song{background:#151515;padding:15px;border-radius:12px;margin-bottom:12px}
-button{padding:8px 14px;border:none;border-radius:8px;background:#1db954;color:white;cursor:pointer;margin-top:5px}
-.player{position:fixed;bottom:0;width:100%;background:#121212;border-top:1px solid #222;padding:15px}
-.controls{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-.visualizer{width:100%;height:60px;background:#000;border-radius:8px;margin-top:10px}
-.rating span{cursor:pointer;font-size:18px}
-.comment{font-size:13px;color:#ccc;margin-top:5px}
-.artistCard{background:#151515;padding:15px;border-radius:12px;margin-bottom:10px}
-.trending{background:#151515;padding:15px;border-radius:12px;margin-bottom:20px}
-@media(max-width:700px){nav{width:100%;margin-top:10px}}
+
+body{
+margin:0;
+font-family:Poppins;
+color:white;
+background:
+linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.95)),
+url('https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead');
+background-size:cover;
+background-attachment:fixed;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+background:rgba(0,0,0,.8);
+backdrop-filter:blur(10px);
+border-bottom:1px solid #222;
+}
+
+.logo{
+font-weight:600;
+font-size:22px;
+color:#1db954
+}
+
+.search{
+padding:8px 12px;
+border-radius:8px;
+border:none;
+background:#111;
+color:white
+}
+
+nav a{
+margin-left:20px;
+color:#ccc;
+text-decoration:none;
+font-size:14px
+}
+
+nav a:hover{color:#1db954}
+
+.layout{
+display:grid;
+grid-template-columns:220px 1fr 300px;
+min-height:calc(100vh - 110px)
+}
+
+.sidebar{
+padding:20px;
+background:rgba(0,0,0,.65);
+border-right:1px solid #222
+}
+
+.sidebar h3{font-size:14px;color:#aaa}
+.sidebar div{margin:10px 0;cursor:pointer}
+.sidebar div:hover{color:#1db954}
+
+.main{padding:25px}
+
+.rightbar{
+padding:20px;
+background:rgba(0,0,0,.6);
+border-left:1px solid #222
+}
+
+.banner{
+height:200px;
+border-radius:12px;
+background:url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4');
+background-size:cover;
+display:flex;
+align-items:flex-end;
+padding:20px;
+margin-bottom:25px
+}
+
+.banner h1{margin:0}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px
+}
+
+.card{
+background:rgba(20,20,20,.9);
+border-radius:12px;
+padding:12px;
+transition:.2s;
+position:relative
+}
+
+.card:hover{transform:scale(1.04)}
+
+.card img{width:100%;border-radius:10px}
+
+.playbtn{
+position:absolute;
+bottom:55px;
+right:15px;
+background:#1db954;
+border:none;
+border-radius:50%;
+width:40px;
+height:40px;
+cursor:pointer;
+display:none
+}
+
+.card:hover .playbtn{display:block}
+
+.songlist{margin-top:15px}
+
+.song{
+background:#111;
+padding:10px;
+border-radius:8px;
+margin-bottom:8px;
+display:flex;
+justify-content:space-between
+}
+
+.player{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#000;
+border-top:1px solid #222;
+padding:10px
+}
+
+.controls{margin-top:5px}
+
+button{
+background:#1db954;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+cursor:pointer
+}
+
+canvas{
+width:100%;
+height:60px;
+background:black;
+border-radius:6px
+}
+
+.widget{
+background:#111;
+padding:12px;
+border-radius:10px;
+margin-bottom:20px
+}
+
+.video{
+width:100%;
+border-radius:8px
+}
+
 </style>
 </head>
 
@@ -36,116 +182,119 @@ button{padding:8px 14px;border:none;border-radius:8px;background:#1db954;color:w
 <div class="logo">LaFamiliaINC</div>
 <input class="search" placeholder="Search music" onkeyup="searchSongs(this.value)">
 <nav>
-<a href="#music">Music</a>
-<a href="#artists">Artists</a>
-<a href="#account">Account</a>
+<a onclick="showPage('home')">Home</a>
+<a onclick="showPage('artists')">Artists</a>
+<a onclick="showPage('albums')">Albums</a>
+<a onclick="showPage('fans')">Fans</a>
 </nav>
 </header>
 
-<div class="container">
-<div class="trending">
-<h3>🔥 Trending Songs</h3>
+<div class="layout">
+
+<div class="sidebar">
+<h3>Artists</h3>
+<div onclick="filterArtist('Str8faceMafia')">Str8faceMafia</div>
+<div onclick="filterArtist('Xucre')">Xucre</div>
+<div onclick="filterArtist('Mervoh')">Mervoh</div>
+<div onclick="filterArtist('Stonfyo Loving')">Stonfyo Loving</div>
+<div onclick="filterArtist('Lo Key')">Lo Key</div>
+<div onclick="filterArtist('Skyson')">Skyson</div>
+</div>
+
+<div class="main">
+
+<div id="home">
+
+<div class="banner">
+<h1>LaFamiliaINC Records</h1>
+</div>
+
+<h2>New Releases</h2>
+<div class="grid" id="albums"></div>
+
+<h2>Tracks</h2>
+<div id="songList"></div>
+
+</div>
+
+<div id="artists" style="display:none">
+<h2>Artist Profiles</h2>
+<div class="grid" id="artistGrid"></div>
+</div>
+
+<div id="fans" style="display:none">
+<h2>Fan Profiles</h2>
+<input id="fanName" placeholder="Create username">
+<button onclick="createFan()">Join</button>
+
+<div id="fanProfile"></div>
+</div>
+
+</div>
+
+<div class="rightbar">
+
+<div class="widget">
+<h3>🔥 Trending</h3>
 <div id="trending"></div>
 </div>
+
+<div class="widget">
+<h3>🏆 Top Fans</h3>
+<div id="topFans"></div>
 </div>
 
-<div class="container" id="music">
-<h2>Stream Music</h2>
-<div id="songList"></div>
+<div class="widget">
+<h3>📰 Label News</h3>
+<p>New Str8faceMafia project dropping soon.</p>
+<p>Xucre visuals coming this week.</p>
 </div>
 
-<div class="container" id="artists">
-<h2>Artists</h2>
-<div class="artistCard">Str8faceMafia — Trap / Hip‑Hop</div>
-<div class="artistCard">Mervoh — Emotional Hip‑Hop</div>
-<div class="artistCard">Xucre — R&B / Alternative</div>
-<div class="artistCard">Stonfyo Loving — Afro Fusion</div>
-<div class="artistCard">Lo Key — Afrobeat</div>
-<div class="artistCard">Skyson — Hip‑Hop</div>
+<div class="widget">
+<h3>📺 Music Video</h3>
+<iframe class="video" height="150" src="https://www.youtube.com/embed/ysz5S6PUM-U"></iframe>
 </div>
 
-<div class="container" id="account">
-<h2>User Account</h2>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="register()">Create Account</button>
-<button onclick="login()">Login</button>
+</div>
 
-<h3>Your Playlist</h3>
-<div id="playlist"></div>
 </div>
 
 <div class="player">
 <div id="nowPlaying">Nothing playing</div>
-<audio id="audio" crossorigin="anonymous"></audio>
-
-<canvas id="visualizer" class="visualizer"></canvas>
-
+<audio id="audio" controls style="width:100%"></audio>
+<canvas id="visualizer"></canvas>
 <div class="controls">
-<button onclick="togglePlay()">Play/Pause</button>
 <button onclick="prevSong()">Prev</button>
+<button onclick="togglePlay()">Play</button>
 <button onclick="nextSong()">Next</button>
-<button onclick="shuffleSongs()">Shuffle</button>
-<button onclick="repeatSong()">Repeat</button>
-<button onclick="saveToPlaylist()">➕ Playlist</button>
-<button onclick="shareTikTok()">TikTok</button>
-<button onclick="shareFacebook()">Facebook</button>
+<button onclick="likeSong()">♥ Like</button>
+<button onclick="followArtist()">Follow</button>
 </div>
-
-<div class="rating" id="rating"></div>
 </div>
 
 <script>
 
-const firebaseConfig={apiKey:"ADD_KEY",authDomain:"ADD_DOMAIN",projectId:"ADD_ID"}
-firebase.initializeApp(firebaseConfig)
-const auth=firebase.auth()
-const db=firebase.firestore()
-
-function register(){
-let e=email.value
-let p=password.value
-auth.createUserWithEmailAndPassword(e,p)
-.then(()=>alert("Account created"))
-.catch(err=>alert(err.message))
-}
-
-function login(){
-let e=email.value
-let p=password.value
-auth.signInWithEmailAndPassword(e,p)
-.then(()=>loadPlaylist())
-.catch(err=>alert(err.message))
-}
-
 function gdrive(id){return `https://drive.google.com/uc?export=download&id=${id}`}
 
 let songs=[
-{artist:"Mervoh",title:"Beautiful Mistake",url:gdrive("1v0hDBFGQ6op72PZ3_LU4nXRy2K6iHpQC"),plays:0},
-{artist:"Str8faceMafia",title:"Loyalty",url:gdrive("1xu6BNTW1GvXBOQ85dwk1qQgNyoSPnlY0"),plays:0},
-{artist:"Str8faceMafia",title:"Velvet Warnings Remix",url:gdrive("1QvqR-_9ZHhJfXf7-E5oZu_inoI8tvw5_"),plays:0},
 {artist:"Str8faceMafia",title:"100 Racks",url:gdrive("1jDtSn2YwbVHdm0kvEjd5Nj3sLVN6_EeP"),plays:0},
+{artist:"Mervoh",title:"Beautiful Mistake",url:gdrive("1v0hDBFGQ6op72PZ3_LU4nXRy2K6iHpQC"),plays:0},
 {artist:"Xucre",title:"Dripping Goddess",url:gdrive("1_nLAWH8pCRrKlx1HzD6OlvDxONZccPlB"),plays:0},
 {artist:"Skyson",title:"Freestyle",url:gdrive("1_3GuOxQUwBPeGnjP9bW1rt_IDI53sFgJ"),plays:0}
 ]
 
-let currentIndex=0
 const audio=document.getElementById("audio")
+let current=0
 
-function renderSongs(){
-let list=document.getElementById("songList")
-list.innerHTML=""
+function renderSongs(list=songs){
+let box=document.getElementById("songList")
+box.innerHTML=""
 
-songs.forEach((s,i)=>{
+list.forEach((s,i)=>{
 let div=document.createElement("div")
 div.className="song"
-
-div.innerHTML=`<strong>${s.title}</strong> — ${s.artist}
-<button onclick="playSong(${i})">Stream</button>
-<button onclick="addComment(${i})">Comment</button>
-<div id="comments-${i}"></div>`
-
-list.appendChild(div)
+div.innerHTML=`${s.title} — ${s.artist} <button onclick="playSong(${i})">Play</button>`
+box.appendChild(div)
 })
 
 updateTrending()
@@ -154,110 +303,77 @@ updateTrending()
 renderSongs()
 
 function playSong(i){
-currentIndex=i
+current=i
 let s=songs[i]
-s.plays++
 audio.src=s.url
+s.plays++
 nowPlaying.innerText=`Now Playing: ${s.title} — ${s.artist}`
 audio.play()
 updateTrending()
+startVisualizer()
 }
 
 function togglePlay(){if(audio.paused)audio.play();else audio.pause()}
-
-function nextSong(){currentIndex=(currentIndex+1)%songs.length;playSong(currentIndex)}
-
-function prevSong(){currentIndex=(currentIndex-1+songs.length)%songs.length;playSong(currentIndex)}
-
-function shuffleSongs(){songs.sort(()=>Math.random()-0.5);renderSongs()}
-
-function repeatSong(){audio.loop=!audio.loop}
+function nextSong(){current=(current+1)%songs.length;playSong(current)}
+function prevSong(){current=(current-1+songs.length)%songs.length;playSong(current)}
 
 function searchSongs(q){
 q=q.toLowerCase()
-document.querySelectorAll('.song').forEach(el=>{
-if(el.innerText.toLowerCase().includes(q))el.style.display='block'
-else el.style.display='none'
-})
+let filtered=songs.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q))
+renderSongs(filtered)
 }
 
-function addComment(i){
-let text=prompt("Write a comment")
-if(!text)return
-
-let div=document.createElement("div")
-div.className="comment"
-div.innerText="💬 "+text
-
-document.getElementById(`comments-${i}`).appendChild(div)
-}
-
-function saveToPlaylist(){
-let user=auth.currentUser
-if(!user)return alert("Login first")
-
-let s=songs[currentIndex]
-
-db.collection("playlists").add({
-uid:user.uid,
-title:s.title,
-artist:s.artist,
-url:s.url
-}).then(()=>loadPlaylist())
-}
-
-function loadPlaylist(){
-let user=auth.currentUser
-if(!user)return
-
-let box=document.getElementById("playlist")
-box.innerHTML=""
-
- db.collection("playlists")
- .where("uid","==",user.uid)
- .get()
- .then(snapshot=>{
- snapshot.forEach(doc=>{
- let s=doc.data()
- let div=document.createElement("div")
- div.innerHTML=`${s.title} — ${s.artist}`
- box.appendChild(div)
- })
- })
-}
-
-function shareTikTok(){
-let s=songs[currentIndex]
-let url=`https://www.tiktok.com/upload?title=${encodeURIComponent(s.title)}`
-window.open(url)
-}
-
-function shareFacebook(){
-let s=songs[currentIndex]
-let url=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(s.url)}`
-window.open(url)
+function filterArtist(name){
+let filtered=songs.filter(s=>s.artist==name)
+renderSongs(filtered)
 }
 
 function updateTrending(){
-let top=[...songs].sort((a,b)=>b.plays-a.plays).slice(0,5)
-
 let box=document.getElementById("trending")
 box.innerHTML=""
 
-top.forEach(s=>{
+[...songs].sort((a,b)=>b.plays-a.plays).slice(0,5).forEach(s=>{
 let div=document.createElement("div")
-div.innerText=`${s.title} — ${s.artist} (${s.plays} plays)`
+div.innerText=s.title+" ("+s.plays+")"
 box.appendChild(div)
 })
 }
 
-const ctx=document.getElementById('visualizer').getContext('2d')
-const audioCtx=new AudioContext()
-const src=audioCtx.createMediaElementSource(audio)
-const analyser=audioCtx.createAnalyser()
-src.connect(analyser)
-analyser.connect(audioCtx.destination)
-analyser.fftSize=64
+function likeSong(){
+alert("Song liked")
+}
+
+function followArtist(){
+alert("Artist followed")
+}
+
+function createFan(){
+let name=document.getElementById("fanName").value
+localStorage.setItem("fan",name)
+fanProfile.innerText="Welcome "+name
+}
+
+function showPage(id){
+['home','artists','fans'].forEach(p=>{
+document.getElementById(p).style.display='none'
+})
+
+document.getElementById(id).style.display='block'
+}
+
+const canvas=document.getElementById("visualizer")
+const ctx=canvas.getContext("2d")
+let audioCtx, analyser, source
+
+function startVisualizer(){
+if(!audioCtx){
+ audioCtx=new AudioContext()
+ source=audioCtx.createMediaElementSource(audio)
+ analyser=audioCtx.createAnalyser()
+ source.connect(analyser)
+ analyser.connect(audioCtx.destination)
+ analyser.fftSize=64
+}
 
 const bufferLength=analyser.frequencyBinCount
 const dataArray=new Uint8Array(bufferLength)
@@ -265,22 +381,18 @@ const dataArray=new Uint8Array(bufferLength)
 function draw(){
 requestAnimationFrame(draw)
 analyser.getByteFrequencyData(dataArray)
-ctx.clearRect(0,0,500,60)
-let barWidth=500/bufferLength
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+let barWidth=(canvas.width/bufferLength)
+
 for(let i=0;i<bufferLength;i++){
 let h=dataArray[i]/2
 ctx.fillStyle="#1db954"
-ctx.fillRect(i*barWidth,60-h,barWidth-2,h)
+ctx.fillRect(i*barWidth,canvas.height-h,barWidth-2,h)
 }
 }
 
 draw()
-
-for(let i=1;i<=5;i++){
-let star=document.createElement("span")
-star.innerText="★"
-star.onclick=()=>alert("Rated "+i+" stars")
-rating.appendChild(star)
 }
 
 </script>
